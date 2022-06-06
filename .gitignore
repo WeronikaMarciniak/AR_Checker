@@ -1,0 +1,7 @@
+# Project exclude paths
+/.gradle/
+# Project exclude paths
+/AR_Checker/build/
+/AR_Checker/build/intermediates/javac/debug/classes/
+/openCVLibrary343/build/
+/openCVLibrary343/build/intermediates/javac/debug/classes/
