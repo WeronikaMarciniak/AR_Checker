@@ -23,6 +23,7 @@ public class CameraCalibrator {
     private final Size mPatternSize = new Size(7, 7);
     private final int mCornersSize = (int)(mPatternSize.width * mPatternSize.height);
     private boolean mPatternWasFound = false;
+    private boolean mCirclePatternWasFound=false;
     private MatOfPoint2f mCorners = new MatOfPoint2f();
     private List<Mat> mCornersBuffer = new ArrayList<Mat>();
     private boolean mIsCalibrated = false;
@@ -33,6 +34,7 @@ public class CameraCalibrator {
     private double mRms;
     private double mSquareSize = 0.0181;
     private Size mImageSize;
+    private PawnsDetector mPawnsDetector;
 
     public CameraCalibrator(int width, int height) {
         mImageSize = new Size(width, height);
@@ -73,6 +75,7 @@ public class CameraCalibrator {
         Log.i(TAG, String.format("Average re-projection error: %f", mRms));
         Log.i(TAG, "Camera matrix: " + mCameraMatrix.dump());
         Log.i(TAG, "Distortion coefficients: " + mDistortionCoefficients.dump());
+
     }
 
     public void clearCorners() {
@@ -123,8 +126,7 @@ public class CameraCalibrator {
     }
 
     private void findPattern(Mat grayFrame) {
-       // mPatternWasFound = Calib3d.findCirclesGrid(grayFrame, mPatternSize,
-                //mCorners, Calib3d.CALIB_CB_ASYMMETRIC_GRID);
+       mCirclePatternWasFound = Calib3d.findCirclesGrid(grayFrame, mPatternSize, mCorners, Calib3d.CALIB_CB_ASYMMETRIC_GRID);
         mPatternWasFound = Calib3d.findChessboardCorners(grayFrame, mPatternSize,
                 mCorners, Calib3d.CALIB_CB_ASYMMETRIC_GRID);
     }
@@ -133,10 +135,14 @@ public class CameraCalibrator {
         if (mPatternWasFound) {
             mCornersBuffer.add(mCorners.clone());
         }
+        if (mCirclePatternWasFound) {
+            mCornersBuffer.add(mCorners.clone());
+        }
     }
 
     private void drawPoints(Mat rgbaFrame) {
         Calib3d.drawChessboardCorners(rgbaFrame, mPatternSize, mCorners, mPatternWasFound);
+        Calib3d.drawChessboardCorners(rgbaFrame,mPatternSize, mCorners, mCirclePatternWasFound);
     }
 
     private void renderFrame(Mat rgbaFrame) {

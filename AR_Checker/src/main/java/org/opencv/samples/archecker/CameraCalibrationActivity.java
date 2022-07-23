@@ -42,6 +42,7 @@ public class CameraCalibrationActivity extends Activity implements CvCameraViewL
     private CameraBridgeViewBase mOpenCvCameraView;
     private CameraCalibrator mCalibrator;
     private OnCameraFrameRender mOnCameraFrameRender;
+    private PawnsDetector mPawnsDetector;
     private int mWidth;
     private int mHeight;
 
@@ -78,6 +79,7 @@ public class CameraCalibrationActivity extends Activity implements CvCameraViewL
         mOpenCvCameraView = (CameraBridgeViewBase) findViewById(R.id.camera_calibration_java_surface_view);
         mOpenCvCameraView.setVisibility(SurfaceView.VISIBLE);
         mOpenCvCameraView.setCvCameraViewListener(this);
+
     }
 
     @Override
@@ -211,6 +213,7 @@ public class CameraCalibrationActivity extends Activity implements CvCameraViewL
     public Mat onCameraFrame(CvCameraViewFrame inputFrame) {
         return mOnCameraFrameRender.render(inputFrame);
     }
+
 
     @Override
     public boolean onTouch(View v, MotionEvent event) {
