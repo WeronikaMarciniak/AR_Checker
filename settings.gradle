@@ -1,3 +1,4 @@
 include ':openCVLibrary343'
 include ':AR_Checker'
 
+include ':ARToolkitBase'

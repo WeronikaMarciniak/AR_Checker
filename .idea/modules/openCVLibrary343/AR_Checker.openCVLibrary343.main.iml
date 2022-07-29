@@ -19,7 +19,7 @@
       </configuration>
     </facet>
   </component>
-  <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_7" inherit-compiler-output="true">
+  <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_8" inherit-compiler-output="true">
     <exclude-output />
     <content url="file://$MODULE_DIR$/../../../openCVLibrary343/build/generated/aidl_source_output_dir/debug/out">
       <sourceFolder url="file://$MODULE_DIR$/../../../openCVLibrary343/build/generated/aidl_source_output_dir/debug/out" isTestSource="false" generated="true" />

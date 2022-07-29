@@ -3,6 +3,10 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/AR_Checker.iml" filepath="$PROJECT_DIR$/.idea/modules/AR_Checker.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/ARToolkitBase/AR_Checker.ARToolkitBase.iml" filepath="$PROJECT_DIR$/.idea/modules/ARToolkitBase/AR_Checker.ARToolkitBase.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/ARToolkitBase/AR_Checker.ARToolkitBase.androidTest.iml" filepath="$PROJECT_DIR$/.idea/modules/ARToolkitBase/AR_Checker.ARToolkitBase.androidTest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/ARToolkitBase/AR_Checker.ARToolkitBase.main.iml" filepath="$PROJECT_DIR$/.idea/modules/ARToolkitBase/AR_Checker.ARToolkitBase.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/ARToolkitBase/AR_Checker.ARToolkitBase.unitTest.iml" filepath="$PROJECT_DIR$/.idea/modules/ARToolkitBase/AR_Checker.ARToolkitBase.unitTest.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/openCVSamplecameracalibration/AR_Checker.AR_Checker.iml" filepath="$PROJECT_DIR$/.idea/modules/openCVSamplecameracalibration/AR_Checker.AR_Checker.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/AR_Checker/AR_Checker.AR_Checker.androidTest.iml" filepath="$PROJECT_DIR$/.idea/modules/AR_Checker/AR_Checker.AR_Checker.androidTest.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/AR_Checker/AR_Checker.AR_Checker.main.iml" filepath="$PROJECT_DIR$/.idea/modules/AR_Checker/AR_Checker.AR_Checker.main.iml" />

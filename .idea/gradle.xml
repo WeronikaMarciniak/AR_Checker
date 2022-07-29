@@ -10,6 +10,7 @@
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
+            <option value="$PROJECT_DIR$/ARToolkitBase" />
             <option value="$PROJECT_DIR$/AR_Checker" />
             <option value="$PROJECT_DIR$/openCVLibrary343" />
           </set>

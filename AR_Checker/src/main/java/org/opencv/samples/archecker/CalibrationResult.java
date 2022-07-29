@@ -6,15 +6,14 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
+abstract class CalibrationResult {
+    private static final String TAG = "CalibrationResult";
 
-public abstract class CalibrationResult {
-    private static final String TAG = "OCVSample::CalibrationResult";
+    public static final int CAMERA_MATRIX_ROWS = 3;
+    public static final int CAMERA_MATRIX_COLS = 3;
+    public static final int DISTORTION_COEFFICIENTS_SIZE = 5;
 
-    private static final int CAMERA_MATRIX_ROWS = 3;
-    private static final int CAMERA_MATRIX_COLS = 3;
-    private static final int DISTORTION_COEFFICIENTS_SIZE = 5;
-
-    public static void save(Activity activity, Mat cameraMatrix, Mat distortionCoefficients) {
+    public static void save(Activity activity, Mat cameraMatrix, Mat distortionCoefficients,int width,int height) {
         SharedPreferences sharedPref = activity.getPreferences(Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
 
@@ -23,7 +22,7 @@ public abstract class CalibrationResult {
         for (int i = 0; i < CAMERA_MATRIX_ROWS; i++) {
             for (int j = 0; j < CAMERA_MATRIX_COLS; j++) {
                 Integer id = i * CAMERA_MATRIX_ROWS + j;
-                editor.putFloat(id.toString(), (float)cameraMatrixArray[id]);
+                editor.putFloat(width + "x" + height+ ":"+id.toString(), (float)cameraMatrixArray[id]);
             }
         }
 
@@ -33,15 +32,15 @@ public abstract class CalibrationResult {
         for (Integer i = shift; i < DISTORTION_COEFFICIENTS_SIZE + shift; i++) {
             editor.putFloat(i.toString(), (float)distortionCoefficientsArray[i-shift]);
         }
-
-        editor.commit();
+        editor.apply();
         Log.i(TAG, "Saved camera matrix: " + cameraMatrix.dump());
         Log.i(TAG, "Saved distortion coefficients: " + distortionCoefficients.dump());
     }
 
-    public static boolean tryLoad(Activity activity, Mat cameraMatrix, Mat distortionCoefficients) {
+
+    public static boolean tryLoad(Activity activity, Mat cameraMatrix, Mat distortionCoefficients, int width, int height) {
         SharedPreferences sharedPref = activity.getPreferences(Context.MODE_PRIVATE);
-        if (sharedPref.getFloat("0", -1) == -1) {
+        if (sharedPref.getFloat(width + "x" + height+ ":0", -1) == -1) {
             Log.i(TAG, "No previous calibration results found");
             return false;
         }

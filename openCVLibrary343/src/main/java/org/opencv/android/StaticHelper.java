@@ -5,7 +5,7 @@ import org.opencv.core.Core;
 import java.util.StringTokenizer;
 import android.util.Log;
 
-class StaticHelper {
+public class StaticHelper {
 
     public static boolean initOpenCV(boolean InitCuda)
     {

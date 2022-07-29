@@ -3,8 +3,8 @@ package org.opencv.samples.archecker;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.opencv.samples.archecker.guide.CalibrationGuide;
 import org.opencv.android.CameraBridgeViewBase.CvCameraViewFrame;
-import org.opencv.core.Core;
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfPoint;
 import org.opencv.core.Point;
@@ -12,10 +12,8 @@ import org.opencv.core.Range;
 import org.opencv.core.Scalar;
 import org.opencv.imgproc.Imgproc;
 
-import android.content.res.Resources;
-
 abstract class FrameRender {
-    protected CameraCalibrator mCalibrator;
+    CameraCalibrator mCalibrator;
 
     public abstract Mat render(CvCameraViewFrame inputFrame);
 }
@@ -28,15 +26,21 @@ class PreviewFrameRender extends FrameRender {
 }
 
 class CalibrationFrameRender extends FrameRender {
+    private CalibrationGuide mGuide = null;
+
     public CalibrationFrameRender(CameraCalibrator calibrator) {
         mCalibrator = calibrator;
     }
+    public void setCalibrationGuide(CalibrationGuide guide){ this.mGuide = guide;}
 
     @Override
     public Mat render(CvCameraViewFrame inputFrame) {
         Mat rgbaFrame = inputFrame.rgba();
         Mat grayFrame = inputFrame.gray();
         mCalibrator.processFrame(grayFrame, rgbaFrame);
+        if(mGuide != null) {
+            mGuide.processFrame(rgbaFrame, mCalibrator.patternWasFound(), mCalibrator.getCorners(), mCalibrator);
+        }
 
         return rgbaFrame;
     }
@@ -58,14 +62,12 @@ class UndistortionFrameRender extends FrameRender {
 }
 
 class ComparisonFrameRender extends FrameRender {
-    private int mWidth;
-    private int mHeight;
-    private Resources mResources;
-    public ComparisonFrameRender(CameraCalibrator calibrator, int width, int height, Resources resources) {
+    private final int mWidth;
+    private final int mHeight;
+    public ComparisonFrameRender(CameraCalibrator calibrator, int width, int height) {
         mCalibrator = calibrator;
         mWidth = width;
         mHeight = height;
-        mResources = resources;
     }
 
     @Override
@@ -76,27 +78,35 @@ class ComparisonFrameRender extends FrameRender {
 
         Mat comparisonFrame = inputFrame.rgba();
         undistortedFrame.colRange(new Range(0, mWidth / 2)).copyTo(comparisonFrame.colRange(new Range(mWidth / 2, mWidth)));
-        List<MatOfPoint> border = new ArrayList<MatOfPoint>();
+        List<MatOfPoint> border = new ArrayList<>();
         final int shift = (int)(mWidth * 0.005);
         border.add(new MatOfPoint(new Point(mWidth / 2 - shift, 0), new Point(mWidth / 2 + shift, 0),
                 new Point(mWidth / 2 + shift, mHeight), new Point(mWidth / 2 - shift, mHeight)));
-        Imgproc.fillPoly(comparisonFrame, border, new Scalar(255, 255, 255));
-
-        Imgproc.putText(comparisonFrame, mResources.getString(R.string.original), new Point(mWidth * 0.1, mHeight * 0.1),
-                Core.FONT_HERSHEY_SIMPLEX, 1.0, new Scalar(255, 255, 0));
-        Imgproc.putText(comparisonFrame, mResources.getString(R.string.undistorted), new Point(mWidth * 0.6, mHeight * 0.1),
-                Core.FONT_HERSHEY_SIMPLEX, 1.0, new Scalar(255, 255, 0));
+        Imgproc.fillPoly(comparisonFrame, border, new Scalar(251, 253, 254));
 
         return comparisonFrame;
     }
 }
 
 class OnCameraFrameRender {
-    private FrameRender mFrameRender;
+    private final FrameRender mFrameRender;
     public OnCameraFrameRender(FrameRender frameRender) {
         mFrameRender = frameRender;
     }
     public Mat render(CvCameraViewFrame inputFrame) {
         return mFrameRender.render(inputFrame);
+    }
+
+    public boolean instanceOfFrameRenderer(Class aClass){
+        return aClass.equals(mFrameRender.getClass());
+    }
+
+    public void setCalibrationGuide(CalibrationGuide guide){
+        if(mFrameRender instanceof CalibrationFrameRender){
+            ((CalibrationFrameRender) mFrameRender).setCalibrationGuide(guide);
+        }
+        else{
+            throw new RuntimeException("Calibration guide not supported for this kind of frame renderer");
+        }
     }
 }
