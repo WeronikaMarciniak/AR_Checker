@@ -1,0 +1,15 @@
+R_DEF: Internal format may change without notice
+local
+array pref_entries_cameraIndex
+array pref_entries_cameraResolution
+array pref_entryValues_cameraIndex
+array pref_entryValues_cameraResolution
+drawable settings
+id settings
+menu options
+string menuItem_settings
+string prefCategory_title_camera
+string pref_defaultValue_cameraResolution
+string pref_title_cameraIndex
+string pref_title_cameraResolution
+xml preferences

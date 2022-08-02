@@ -1,0 +1,41 @@
+org/artoolkit/ar/base/assets/HashComputationException.java
+ org.artoolkit.ar.base.assets.HashComputationException
+org/artoolkit/ar/base/camera/CaptureCameraPreview.java
+ org.artoolkit.ar.base.camera.CaptureCameraPreview
+ org.artoolkit.ar.base.camera.CaptureCameraPreview$1
+org/artoolkit/ar/base/ARToolKit.java
+ org.artoolkit.ar.base.ARToolKit
+org/artoolkit/ar/base/rendering/Cube.java
+ org.artoolkit.ar.base.rendering.Cube
+org/artoolkit/ar/base/AndroidUtils.java
+ org.artoolkit.ar.base.AndroidUtils
+org/artoolkit/ar/base/FPSCounter.java
+ org.artoolkit.ar.base.FPSCounter
+org/artoolkit/ar/base/assets/AssetHelper.java
+ org.artoolkit.ar.base.assets.AssetHelper
+org/artoolkit/ar/base/rendering/ARRenderer.java
+ org.artoolkit.ar.base.rendering.ARRenderer
+org/artoolkit/ar/base/camera/CameraEventListener.java
+ org.artoolkit.ar.base.camera.CameraEventListener
+org/artoolkit/ar/base/NativeInterface.java
+ org.artoolkit.ar.base.NativeInterface
+org/artoolkit/ar/base/assets/AssetFileTransferException.java
+ org.artoolkit.ar.base.assets.AssetFileTransferException
+org/artoolkit/ar/base/camera/CameraWrapper.java
+ org.artoolkit.ar.base.camera.CameraWrapper
+org/artoolkit/ar/base/BuildConfig.java
+ org.artoolkit.ar.base.BuildConfig
+org/artoolkit/ar/base/ARActivity.java
+ org.artoolkit.ar.base.ARActivity
+ org.artoolkit.ar.base.ARActivity$1
+ org.artoolkit.ar.base.ARActivity$2
+org/artoolkit/ar/base/camera/CameraPreferencesActivity.java
+ org.artoolkit.ar.base.camera.CameraPreferencesActivity
+ org.artoolkit.ar.base.camera.CameraPreferencesActivity$ASPECT_RATIO
+ org.artoolkit.ar.base.camera.CameraPreferencesActivity$PixelSizeToAspectRatio
+org/artoolkit/ar/base/rendering/RenderUtils.java
+ org.artoolkit.ar.base.rendering.RenderUtils
+org/artoolkit/ar/base/assets/Hasher.java
+ org.artoolkit.ar.base.assets.Hasher
+org/artoolkit/ar/base/assets/AssetFileTransfer.java
+ org.artoolkit.ar.base.assets.AssetFileTransfer

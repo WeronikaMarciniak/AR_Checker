@@ -1,15 +1,10 @@
 package org.opencv.samples.archecker;
-import org.artoolkit.ar.base.ARActivity;
-import org.artoolkit.ar.base.rendering.ARRenderer;
 
-import android.Manifest;
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.hardware.Camera;
 import android.hardware.camera2.CameraCharacteristics;
@@ -18,13 +13,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Vibrator;
 import android.preference.PreferenceManager;
-
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-import androidx.core.view.GravityCompat;
-import androidx.drawerlayout.widget.DrawerLayout;
 import android.util.Log;
 import android.view.SurfaceView;
 import android.view.View;
@@ -42,6 +31,11 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+
+import org.artoolkit.ar.base.rendering.ARRenderer;
+import org.artoolkit.ar.base.rendering.Cube;
 import org.opencv.samples.archecker.guide.CalibrationGuide;
 import org.opencv.samples.archecker.guide.CalibrationGuideListener;
 import org.opencv.samples.archecker.menu.MenuArrayAdapter;
@@ -49,9 +43,11 @@ import org.opencv.samples.archecker.share.ShareActivity;
 import org.opencv.android.CameraBridgeViewBase;
 import org.opencv.android.CameraBridgeViewBase.CvCameraViewFrame;
 import org.opencv.android.CameraBridgeViewBase.CvCameraViewListener2;
-import org.opencv.android.JavaCameraView;
 import org.opencv.android.StaticHelper;
 import org.opencv.core.Mat;
+import org.opencv.core.Point;
+import org.opencv.core.Scalar;
+import org.opencv.imgproc.Imgproc;
 
 import java.io.File;
 import java.lang.reflect.Array;
@@ -59,35 +55,38 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Arrays;
-public class CameraCalibrationActivity extends  Activity implements  CvCameraViewListener2,
+
+import javax.microedition.khronos.opengles.GL10;
+
+public class CameraCalibrationActivity extends Activity implements CvCameraViewListener2,
         View.OnClickListener, Animation.AnimationListener, AdapterView.OnItemClickListener, CalibrationGuideListener {
     public static final int COMPARE_MENU_POS = 0;
     public static final int UNDISTORETED_VIDEO_POS = 1;
     public static final int NEW_CALIBRATION = 2;
     public static final int SHARE_POS = 3;
+    //    public static final int PRINT_POS = 4;
     public static final int SETTINGS_MENU_POS = 5;
     public static final int HELP_POS = 6;
     public static final int CALIB_MESSAGE_POS = 7;
     public static final int CALIB_STATS = 4;
-    private static final int MY_PERMISSIONS_REQUEST_CAMERA = 133;
     private static final String TAG = "OCVSample::Activity";
     private static final String ANDROID_CAMERA_CALIBRATION_HELP_URL = "https://github.com/artoolkit/artoolkit6/wiki/Camera-calibration-Android";
     private static final int CALIBRATION_DETAIL_REQ_CODE = 1;
     public static final String INTENT_EXTRA_CAMERA_CALIBRATOR = "Calibrator";
     public static boolean GUIDE_MODE = false;
-    private SimpleRenderer simpleRenderer = new SimpleRenderer();
 
     static {
         System.loadLibrary("c++_shared");
         System.loadLibrary("calibration_upload_native");
     }
 
-    private  CameraBridgeViewBase mOpenCvCameraView;
+    private CameraBridgeViewBase mOpenCvCameraView;
     private CameraCalibrator mCalibrator;
     private OnCameraFrameRender mOnCameraFrameRender;
     private int mWidth;
     private int mHeight;
     private ImageButton mStartCalibrationButton;
+    private ImageButton mStartGameButton;
     private DrawerLayout mDrawerLayout;
     private ImageButton mMenuButton;
     private TextView mGuidingText;
@@ -102,7 +101,8 @@ public class CameraCalibrationActivity extends  Activity implements  CvCameraVie
     private PopupWindow mPopupWindow;
     private TextView mTextUploadStatus;
     private ImageView mButtonUploadError;
-    private FrameLayout mainLayout;
+
+
     public CameraCalibrationActivity() {
         Log.i(TAG, "Instantiated new " + this.getClass());
     }
@@ -114,20 +114,10 @@ public class CameraCalibrationActivity extends  Activity implements  CvCameraVie
 
     public static native void nativeStop();
 
-    @SuppressLint("WrongViewCast")
     @Override
     public void onCreate(Bundle savedInstanceState) {
         Log.i(TAG, "called onCreate");
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.camera_calibration_surface_view);
-        //  mainLayout = (FrameLayout) this.findViewById(R.id.camera_calibration_frame);
-
-        if (!checkCameraPermission()) {
-            //if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.CAMERA)) { //ASK EVERY TIME - it's essential!
-            ActivityCompat.requestPermissions(this,
-                    new String[]{Manifest.permission.CAMERA},
-                    MY_PERMISSIONS_REQUEST_CAMERA);
-        }
 
         //Load the OpenCV libs native libs
         if (!StaticHelper.initOpenCV(false)) {
@@ -138,30 +128,21 @@ public class CameraCalibrationActivity extends  Activity implements  CvCameraVie
             Log.i(TAG, "OpenCV loaded successfully");
         }
 
-
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
+        setContentView(R.layout.camera_calibration_surface_view);
 
         mPrefs = PreferenceManager.getDefaultSharedPreferences(this);
 
         mOpenCvCameraView = (CameraBridgeViewBase) findViewById(R.id.camera_calibration_java_surface_view);
-
         mOpenCvCameraView.setVisibility(SurfaceView.VISIBLE);
-        CameraBridgeViewBase mFrameView ;
         mOpenCvCameraView.setCvCameraViewListener(this);
-        mOpenCvCameraView.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-
-                simpleRenderer.click();
-
-                Vibrator vib = (Vibrator) getSystemService(VIBRATOR_SERVICE);
-                vib.vibrate(40);
-            }
-
-        });
+        mOpenCvCameraView.setOnClickListener(this);
 
         mStartCalibrationButton = (ImageButton) findViewById(R.id.button_startCalibration);
         mStartCalibrationButton.setOnClickListener(this);
+        mStartGameButton = (ImageButton) findViewById(R.id.button_startGame);
+        mStartGameButton.setOnClickListener(this);
 
         mMenuButton = (ImageButton) findViewById(R.id.button_menu);
         mMenuButton.setOnClickListener(this);
@@ -169,27 +150,34 @@ public class CameraCalibrationActivity extends  Activity implements  CvCameraVie
         mGuideButton = (ImageButton) findViewById(R.id.button_guideMode);
         mGuideButton.setOnClickListener(this);
 
+        //Create slide in menu
         String[] menuEntries = getResources().getStringArray(R.array.menuItems);
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         ListView drawerList = (ListView) findViewById(R.id.menuList);
 
+        // Set the adapter for the list view
         menuArrayAdapter = new MenuArrayAdapter(this, new ArrayList<>(Arrays.asList(menuEntries)));
         drawerList.setAdapter(menuArrayAdapter);
         drawerList.setOnItemClickListener(this);
 
+        //Get guiding textView
         mGuidingText = (TextView) findViewById(R.id.text_guiding);
 
+        //Animation for 'start calibration button'
         mFadeInAnimation = AnimationUtils.loadAnimation(this, R.anim.fade_in);
         mFadeInAnimation.setAnimationListener(this);
         mFadeOutAnimation = AnimationUtils.loadAnimation(this, R.anim.fade_out);
         mFadeOutAnimation.setAnimationListener(this);
 
+        //Get handle to compare view
         mCompareVideoView = (ViewGroup) findViewById(R.id.view_compare);
 
+        //Get handle to guide view progress and upload status
         mProgress = (ProgressBar) findViewById(R.id.progressBar);
         mUploadStatus = (ProgressBar) findViewById(R.id.uploadStatusBar);
         mUploadStatus.setOnClickListener(this);
 
+        //Get all handles for the uploadStatus feature
         View uploadStatusViewLayout = getLayoutInflater().inflate(R.layout.upload_status_layout,null);
         mTextUploadStatus = (TextView) uploadStatusViewLayout.findViewById(R.id.text_uploadStatus);
 
@@ -198,35 +186,6 @@ public class CameraCalibrationActivity extends  Activity implements  CvCameraVie
         mButtonUploadError.setOnClickListener(this);
     }
 
-    @Override
-    public ARRenderer supplyRenderer() {
-        if (!checkCameraPermission()) {
-            Toast.makeText(this, "No camera permission - restart the app", Toast.LENGTH_LONG).show();
-            return null;
-        }
-
-        return new SimpleRenderer();
-    }
-    private boolean checkCameraPermission() {
-        return ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED;
-    }
-    @Override
-    public FrameLayout supplyFrameLayout() {
-        return (FrameLayout) this.findViewById(R.id.camera_calibration_java_surface_view);
-
-    }
-    @Override
-    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
-        switch (requestCode) {
-            case MY_PERMISSIONS_REQUEST_CAMERA: {
-                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED)
-                    Toast.makeText(this, "Permission granted", Toast.LENGTH_SHORT).show();
-                else
-                    Toast.makeText(this, "Permission denied", Toast.LENGTH_SHORT).show();
-                return;
-            }
-        }
-    }
     @Override
     public void onPause() {
         super.onPause();
@@ -242,8 +201,10 @@ public class CameraCalibrationActivity extends  Activity implements  CvCameraVie
         mOpenCvCameraView.enableView();
         int cameraId = Integer.parseInt(mPrefs.getString(CalibCameraPreferences.PREF_CAMERA_INDEX, this.getString(R.string.pref_defaultValue_cameraIndex)));
 
+
         mOpenCvCameraView.setCameraIndex(cameraId);
 
+        //TODO: Check implication on phones running API level 15 to 19
         mOpenCvCameraView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LOW_PROFILE | View.SYSTEM_UI_FLAG_IMMERSIVE | View.SYSTEM_UI_FLAG_FULLSCREEN | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
 
         boolean shareWithArtkCommunity = mPrefs.getBoolean(CalibCameraPreferences.PREF_CALIBRATION_SERVER_SHARE_WITH_ARTK,Boolean.parseBoolean(this.getString(R.string.pref_calibrationSendToARK_default)));
@@ -292,7 +253,7 @@ public class CameraCalibrationActivity extends  Activity implements  CvCameraVie
     }
 
     @Override
-    public void onStop() {
+    protected void onStop() {
         super.onStop();
 
         new AsyncTask() {
@@ -338,6 +299,7 @@ public class CameraCalibrationActivity extends  Activity implements  CvCameraVie
                         res.getString(R.string.calibration_unsuccessful);
                 (Toast.makeText(CameraCalibrationActivity.this, resultMessage, Toast.LENGTH_SHORT)).show();
 
+                //Only have one previous calibration message in the list
                 if (menuArrayAdapter.getCount() > CALIB_MESSAGE_POS) {
                     menuArrayAdapter.remove(menuArrayAdapter.getItem(CALIB_MESSAGE_POS));
                 }
@@ -348,6 +310,7 @@ public class CameraCalibrationActivity extends  Activity implements  CvCameraVie
                     CalibrationResult.save(CameraCalibrationActivity.this,
                             calibrator.getCameraMatrix(), calibrator.getDistortionCoefficients(), mWidth, mHeight);
                     uploadCalibration();
+                    mStartGameButton.setVisibility(View.VISIBLE);
                     mGuidingText.setText(R.string.text_calibrationFinished);
                 }
                 mCalibrator = calibrator;
@@ -417,7 +380,14 @@ public class CameraCalibrationActivity extends  Activity implements  CvCameraVie
             mGuidingText.setText(picsTaken);
             mStartCalibrationButton.startAnimation(mFadeOutAnimation);
             startCalibration(mCalibrator);
-        } else if (v.equals(mMenuButton)) {
+        }
+        else if (v.equals(mStartGameButton)) {
+
+            mStartGameButton.startAnimation(mFadeOutAnimation);
+            Intent intent1 = new Intent(this, StartGameActivity.class);
+            startActivity(intent1);
+            //  startCalibration(mCalibrator); - place here startgame function
+        }else if (v.equals(mMenuButton)) {
             mDrawerLayout.openDrawer(GravityCompat.START);
         } else if (v.equals(mGuideButton)) {
             guideButtonLogic();
@@ -471,8 +441,15 @@ public class CameraCalibrationActivity extends  Activity implements  CvCameraVie
     public void onAnimationEnd(Animation animation) {
         if (animation.equals(mFadeInAnimation))
             mStartCalibrationButton.setVisibility(View.VISIBLE);
+
         else if (animation.equals(mFadeOutAnimation))
             mStartCalibrationButton.setVisibility(View.INVISIBLE);
+
+       /* if(mCalibrator.isCalibrated() && animation.equals(mFadeInAnimation)){
+            mStartGameButton.setVisibility(View.VISIBLE);
+        }
+        else if(!mCalibrator.isCalibrated() && animation.equals(mFadeOutAnimation)){
+            mStartGameButton.setVisibility(View.INVISIBLE);}*/
     }
 
     @Override
@@ -481,6 +458,7 @@ public class CameraCalibrationActivity extends  Activity implements  CvCameraVie
     }
 
     @Override
+    //Handles the clicks on the menu
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         Context context = parent.getContext();
         mCompareVideoView.setVisibility(View.INVISIBLE);
@@ -500,6 +478,7 @@ public class CameraCalibrationActivity extends  Activity implements  CvCameraVie
             mGuidingText.setText(R.string.undistorted);
         } else if (position == NEW_CALIBRATION) {
             mGuideButton.setVisibility(View.VISIBLE);
+            mStartGameButton.setVisibility(View.INVISIBLE);
             mCalibrator = new CameraCalibrator(mWidth, mHeight);
             mOnCameraFrameRender =
                     new OnCameraFrameRender(new CalibrationFrameRender(mCalibrator));
@@ -545,12 +524,24 @@ public class CameraCalibrationActivity extends  Activity implements  CvCameraVie
             @Override
             public void run() {
                 mGuidingText.setText(picsTaken);
+                //Make start calibration button visible
                 if (cornerBufferListSize == 5 && !GUIDE_MODE) {
                     mStartCalibrationButton.startAnimation(mFadeInAnimation);
                 }
+
             }
         });
 
+    }
+
+    @Override
+    public ARRenderer supplyRenderer() {
+        return null;
+    }
+
+    @Override
+    public FrameLayout supplyFrameLayout() {
+        return null;
     }
 
     @Override
@@ -577,6 +568,7 @@ public class CameraCalibrationActivity extends  Activity implements  CvCameraVie
 
     private String md5(String s) {
         try {
+            // Create MD5 Hash
             MessageDigest digest = MessageDigest.getInstance("MD5");
             digest.update(s.getBytes());
             byte messageDigest[] = digest.digest();
@@ -596,6 +588,7 @@ public class CameraCalibrationActivity extends  Activity implements  CvCameraVie
         return "";
     }
 
+    //Called from native
     public void setUploadStatusText(final String status){
         this.runOnUiThread(new Runnable() {
             @Override
@@ -623,4 +616,11 @@ public class CameraCalibrationActivity extends  Activity implements  CvCameraVie
             }
         });
     }
+
+    @Override
+    public void onPointerCaptureChanged(boolean hasCapture) {
+        super.onPointerCaptureChanged(hasCapture);
+    }
+
+    //End called from native
 }
