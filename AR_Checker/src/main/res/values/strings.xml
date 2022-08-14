@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">artoolkitX Camera Calibration</string>
+    <string name="app_name">AR Checker</string>
     <string name="calibration">New calibration</string>
     <string name="undistorted">Undistorted</string>
     <string name="comparison">Comparison</string>
@@ -62,6 +62,7 @@
     <string name="share_text">Share using</string>
     <string name="deleteCalibrationFiles">Delete all calibration files</string>
     <string name="startCalibrationDesc">Start the camera calibration</string>
+    <string name="startGameDesc">Start the checkers game</string>
     <string name="menuDesc">Open the menu</string>
     <string name="guidingText_Preloaded">Calibration from previous run already loaded. Tap on screen to start new calibration.</string>
     <string name="pref_defaultValue_cameraIndex">0</string>
