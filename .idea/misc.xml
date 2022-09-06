@@ -3,8 +3,15 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="AR_Checker/src/main/res/layout/camera_calibration_surface_view.xml" value="0.1" />
+        <entry key="ARToolkitBase/src/main/res/menu/options.xml" value="0.1" />
+        <entry key="AR_Checker/src/main/res/layout/activity_calibration_details.xml" value="0.1490036231884058" />
+        <entry key="AR_Checker/src/main/res/layout/camera_calibration_surface_view.xml" value="0.22" />
+        <entry key="AR_Checker/src/main/res/layout/menu_list_item.xml" value="0.1490036231884058" />
+        <entry key="AR_Checker/src/main/res/layout/menu_list_item_calib_result.xml" value="0.1490036231884058" />
+        <entry key="AR_Checker/src/main/res/layout/share_list_item.xml" value="0.1490036231884058" />
+        <entry key="AR_Checker/src/main/res/layout/upload_status_layout.xml" value="0.1490036231884058" />
         <entry key="AR_Checker/src/main/res/menu/calibration.xml" value="0.1" />
+        <entry key="AR_Checker/src/main/res/xml/preferences.xml" value="0.22" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.14583333333333334" />
       </map>
     </option>

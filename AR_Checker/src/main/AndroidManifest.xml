@@ -40,10 +40,9 @@
         android:supportsRtl="true"
         android:theme="@style/CameraCalibrationTheme">
         <activity
-            android:name="org.archecker.cameracalibration.SplashActivity"
-            android:theme="@style/SplashTheme"
-            android:label="@string/app_name"
+            android:name="org.archecker.cameracalibration.CameraCalibrationActivity"
             android:configChanges="keyboardHidden|orientation"
+            android:label="@string/app_name"
             android:screenOrientation="landscape">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -51,18 +50,12 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="org.archecker.cameracalibration.CameraCalibrationActivity"
-            android:configChanges="keyboardHidden|orientation"
-            android:label="@string/app_name"
-            android:screenOrientation="landscape">
-        </activity>
-        <activity
             android:name="org.archecker.artoolkitgame.StartGameActivity"
             android:configChanges="keyboardHidden|orientation"
             android:label="StartGame"
             android:screenOrientation="landscape">
         </activity>
-        <activity android:name="org.archecker.cameracalibration.CalibCameraPreferences" />
+        <activity android:name="org.archecker.cameracalibration.CameraPrefActivity" />
         <activity
             android:name="org.archecker.share.ShareActivity"
             android:label="@string/title_activity_share">

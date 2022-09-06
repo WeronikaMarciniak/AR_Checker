@@ -12,16 +12,12 @@
     <string name="please_wait">Please, wait</string>
     <string name="original">Original</string>
 
-    <string name="help">Help</string>
-
     <string-array name="menuItems">
         <item>@string/comparison</item>
         <item>@string/undistorted</item>
         <item>@string/calibration</item>
         <item>@string/share_calibration</item>
-        <!--<item>@string/prefCategory_title_printing</item>-->
         <item>@string/menuItem_settings</item>
-        <item>@string/help</item>
         <item>@string/calib_stats</item>
     </string-array>
 
@@ -72,11 +68,6 @@
     <string name="error_no_calibration">No calibration files to share. Run a calibration first.</string>
     <string name="text_calibrationFinished">Calibration finished. Now in preview mode.</string>
     <string name="text_frameRejected">Frame rejected as the angle from camera to pattern is to steep. Angle > 40˚</string>
-    <string name="prefCategory_title_server">Server settings</string>
-    <string name="pref_calibrationServerDefault">https://archecker.org/app/calibrate/upload.php</string>
-    <string name="pref_calibrationServerARTK">https://archecker.org/app/calibrate/upload.php</string>
-    <string name="pref_calibrationServerTokenDefault">ARToolKit.Rocks</string>
-    <string name="pref_calibrationServerTokenARTK">TopSecret</string>
     <string name="calib_stats">Calibration statistics</string>
     <string name="string_averageReproErr">- Average reprojection error</string>
     <string name="removeFrame">Remove frame from calibration</string>
@@ -84,19 +75,8 @@
     <string name="error_values_removed">Values removed. Recalibration starts when navigating back to main screen.</string>
     <string name="deleteCalibrationFrame">Delete this frame from calibration</string>
     <string name="camera_lense_content_description">camera lense taking a picture</string>
-    <string name="prefCategory_title_server_url">Server URL</string>
-    <string name="prefCategory_title_server_token">Calibration server authentication token</string>
-    <string name="prefCategory_title_sendToARTK">Upload to artoolkit.org</string>
-    <string name="pref_calibrationSendToARK_default">true</string>
 
     <plurals name="numberOfPicturesTaken">
-        <!--
-             As a developer, you should always supply "one" and "other"
-             strings. Your translators will know which strings are actually
-             needed for their language. Always include %d in "one" because
-             translators will need to use %d for languages where "one"
-             doesn't mean 1 (as explained above).
-          -->
         <item quantity="one">%d picture taken</item>
         <item quantity="other">%d pictures taken</item>
     </plurals>
