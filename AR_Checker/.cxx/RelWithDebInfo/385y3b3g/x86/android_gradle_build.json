@@ -1,0 +1,42 @@
+{
+  "stringTable": {},
+  "buildFiles": [
+    "/home/admin1/AndroidStudioProjects/artoolkitX-calibration-android/Source/camera-calibration/ARToolKit_CameraCalibration/CMakeLists.txt"
+  ],
+  "cleanCommandsComponents": [
+    [
+      "/home/admin1/Android/Sdk/cmake/3.10.2.4988404/bin/ninja",
+      "-C",
+      "/home/admin1/AndroidStudioProjects/artoolkitX-calibration-android/Source/camera-calibration/ARToolKit_CameraCalibration/.cxx/RelWithDebInfo/385y3b3g/x86",
+      "clean"
+    ]
+  ],
+  "buildTargetsCommandComponents": [
+    "/home/admin1/Android/Sdk/cmake/3.10.2.4988404/bin/ninja",
+    "-C",
+    "/home/admin1/AndroidStudioProjects/artoolkitX-calibration-android/Source/camera-calibration/ARToolKit_CameraCalibration/.cxx/RelWithDebInfo/385y3b3g/x86",
+    "{LIST_OF_TARGETS_TO_BUILD}"
+  ],
+  "libraries": {
+    "calibration_upload_native-RelWithDebInfo-x86": {
+      "buildCommandComponents": [
+        "/home/admin1/Android/Sdk/cmake/3.10.2.4988404/bin/ninja",
+        "-C",
+        "/home/admin1/AndroidStudioProjects/artoolkitX-calibration-android/Source/camera-calibration/ARToolKit_CameraCalibration/.cxx/RelWithDebInfo/385y3b3g/x86",
+        "calibration_upload_native"
+      ],
+      "buildType": "release",
+      "abi": "x86",
+      "artifactName": "calibration_upload_native",
+      "output": "/home/admin1/AndroidStudioProjects/artoolkitX-calibration-android/Source/camera-calibration/ARToolKit_CameraCalibration/build/intermediates/cxx/RelWithDebInfo/385y3b3g/obj/x86/libcalibration_upload_native.so",
+      "runtimeFiles": [
+        "/home/admin1/AndroidStudioProjects/artoolkitX-calibration-android/Source/artoolkitX-dependency/x86/libARX.so"
+      ]
+    }
+  },
+  "toolchains": {},
+  "cFileExtensions": [],
+  "cppFileExtensions": [
+    "cpp"
+  ]
+}

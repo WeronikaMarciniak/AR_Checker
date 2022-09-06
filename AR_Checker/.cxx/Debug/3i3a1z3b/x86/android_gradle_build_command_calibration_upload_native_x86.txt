@@ -1,0 +1,7 @@
+Executable : /home/admin1/Android/Sdk/cmake/3.10.2.4988404/bin/ninja
+arguments : 
+-C
+/home/admin1/AndroidStudioProjects/artoolkitX-calibration-android/Source/camera-calibration/ARToolKit_CameraCalibration/.cxx/Debug/3i3a1z3b/x86
+calibration_upload_native
+jvmArgs : 
+

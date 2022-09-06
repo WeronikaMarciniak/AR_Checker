@@ -5,6 +5,7 @@
       <map>
         <entry key="ARToolkitBase/src/main/res/menu/options.xml" value="0.1" />
         <entry key="AR_Checker/src/main/res/layout/activity_calibration_details.xml" value="0.1490036231884058" />
+        <entry key="AR_Checker/src/main/res/layout/activity_main.xml" value="0.1" />
         <entry key="AR_Checker/src/main/res/layout/camera_calibration_surface_view.xml" value="0.22" />
         <entry key="AR_Checker/src/main/res/layout/menu_list_item.xml" value="0.1490036231884058" />
         <entry key="AR_Checker/src/main/res/layout/menu_list_item_calib_result.xml" value="0.1490036231884058" />

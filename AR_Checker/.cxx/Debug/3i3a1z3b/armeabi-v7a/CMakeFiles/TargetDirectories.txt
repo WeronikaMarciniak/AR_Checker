@@ -1,0 +1,3 @@
+/home/admin1/AndroidStudioProjects/artoolkitX-calibration-android/Source/camera-calibration/ARToolKit_CameraCalibration/.cxx/Debug/3i3a1z3b/armeabi-v7a/CMakeFiles/rebuild_cache.dir
+/home/admin1/AndroidStudioProjects/artoolkitX-calibration-android/Source/camera-calibration/ARToolKit_CameraCalibration/.cxx/Debug/3i3a1z3b/armeabi-v7a/CMakeFiles/edit_cache.dir
+/home/admin1/AndroidStudioProjects/artoolkitX-calibration-android/Source/camera-calibration/ARToolKit_CameraCalibration/.cxx/Debug/3i3a1z3b/armeabi-v7a/CMakeFiles/calibration_upload_native.dir

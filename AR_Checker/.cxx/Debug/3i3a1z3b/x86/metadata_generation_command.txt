@@ -1,0 +1,25 @@
+                    Executable : /home/admin1/Android/Sdk/cmake/3.10.2.4988404/bin/cmake
+arguments : 
+-H/home/admin1/AndroidStudioProjects/artoolkitX-calibration-android/Source/camera-calibration/ARToolKit_CameraCalibration
+-DCMAKE_SYSTEM_NAME=Android
+-DCMAKE_EXPORT_COMPILE_COMMANDS=ON
+-DCMAKE_SYSTEM_VERSION=21
+-DANDROID_PLATFORM=android-21
+-DANDROID_ABI=x86
+-DCMAKE_ANDROID_ARCH_ABI=x86
+-DANDROID_NDK=/home/admin1/Android/Sdk/ndk/21.4.7075529
+-DCMAKE_ANDROID_NDK=/home/admin1/Android/Sdk/ndk/21.4.7075529
+-DCMAKE_TOOLCHAIN_FILE=/home/admin1/Android/Sdk/ndk/21.4.7075529/build/cmake/android.toolchain.cmake
+-DCMAKE_MAKE_PROGRAM=/home/admin1/Android/Sdk/cmake/3.10.2.4988404/bin/ninja
+-DCMAKE_LIBRARY_OUTPUT_DIRECTORY=/home/admin1/AndroidStudioProjects/artoolkitX-calibration-android/Source/camera-calibration/ARToolKit_CameraCalibration/build/intermediates/cxx/Debug/3i3a1z3b/obj/x86
+-DCMAKE_RUNTIME_OUTPUT_DIRECTORY=/home/admin1/AndroidStudioProjects/artoolkitX-calibration-android/Source/camera-calibration/ARToolKit_CameraCalibration/build/intermediates/cxx/Debug/3i3a1z3b/obj/x86
+-DCMAKE_BUILD_TYPE=Debug
+-B/home/admin1/AndroidStudioProjects/artoolkitX-calibration-android/Source/camera-calibration/ARToolKit_CameraCalibration/.cxx/Debug/3i3a1z3b/x86
+-GNinja
+-DANDROID_STL=c++_shared
+-DANDROID_CPP_FEATURES=rtti exceptions
+jvmArgs : 
+
+
+                    Build command args: []
+                    Version: 2
