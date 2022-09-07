@@ -27,7 +27,7 @@ public class GuideMode {
     private static final int MAX_POINTS = 8;
     private final ProgressBar progress;
     private final ImageView takePicture;
-    private final CameraCalibrationActivity mActivity;
+    private final CameraCalibrationActivity cameraCalibrationActivity;
     private Mat frame;
     private int step = 0;
     private int width;
@@ -50,13 +50,13 @@ public class GuideMode {
         this.height = height;
         progress = (ProgressBar) cameraCalibrationActivity.findViewById(R.id.progressBar);
         takePicture = (ImageView) cameraCalibrationActivity.findViewById(R.id.image_takePicture);
-        this.mActivity = cameraCalibrationActivity;
+        this.cameraCalibrationActivity = cameraCalibrationActivity;
         calculateDisplayDensity();
     }
 
     private void calculateDisplayDensity() {
         float widthInInch;
-        Resources res = mActivity.getResources();
+        Resources res = cameraCalibrationActivity.getResources();
         DisplayMetrics metrics = res.getDisplayMetrics();
         widthInInch = (float) metrics.widthPixels / (float) metrics.densityDpi;
         float newDensity = width / widthInInch;
@@ -92,7 +92,7 @@ public class GuideMode {
             if (distance > dpToPixel(VALID_DISTANCE_MIN) && distance < dpToPixel(VALID_DISTANCE_MAX)){
                 currentArrowColor = arrowColorGreen;
                 if (time > (start + TIME_DIFF)) {
-                    mActivity.runOnUiThread(new Runnable() {
+                    cameraCalibrationActivity.runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
                             takePicture.setVisibility(View.VISIBLE);
@@ -102,7 +102,7 @@ public class GuideMode {
 
                     if(!calibrator.checkLastFrame()) {
                         calibrator.addCorners();
-                        mActivity.picAddedMessage(calibrator.getCornersBufferSize());
+                        cameraCalibrationActivity.picAddedMessage(calibrator.getCornersBufferSize());
 
                         calibrator.calibrate();
                         try {
@@ -113,12 +113,12 @@ public class GuideMode {
                         next();
                     }
                     else{
-                        mActivity.runOnUiThread(new Runnable() {
+                        cameraCalibrationActivity.runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
                                 takePicture.setVisibility(View.INVISIBLE);
                                 progress.setVisibility(View.VISIBLE);
-                                Toast toast = Toast.makeText(mActivity, R.string.text_frameRejected,Toast.LENGTH_LONG);
+                                Toast toast = Toast.makeText(cameraCalibrationActivity, R.string.text_frameRejected,Toast.LENGTH_LONG);
                                 toast.show();
                             }
                         });
@@ -149,7 +149,7 @@ public class GuideMode {
         drawCircleInFrame();
         drawArrowInFrame();
 
-        mActivity.runOnUiThread(new Runnable() {
+        cameraCalibrationActivity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 takePicture.setVisibility(View.INVISIBLE);
